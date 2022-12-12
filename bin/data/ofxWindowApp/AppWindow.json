@@ -1,0 +1,21 @@
+[
+    {
+        "position": {
+            "x": 409.0,
+            "y": 92.0
+        },
+        "size": {
+            "height": 878,
+            "width": 949
+        },
+        "window_mode": "OF_WINDOW"
+    },
+    {
+        "extra_settings": {
+            "debug": "0",
+            "performance": "1",
+            "targetFps": "60.5",
+            "vsync": "0"
+        }
+    }
+]

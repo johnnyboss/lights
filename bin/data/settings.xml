@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<group>
+	<stripSeqToggle>1</stripSeqToggle>
+	<tubeSeqToggle>1</tubeSeqToggle>
+	<dmxToggle>1</dmxToggle>
+	<guiToggle>1</guiToggle>
+	<midiToggle>0</midiToggle>
+</group>

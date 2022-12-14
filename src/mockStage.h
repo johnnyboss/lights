@@ -11,7 +11,7 @@ class mockStage
 public:
     void setup();
     void updateLeds();
-    void updateStrips();
+    void updateStrips(vector<float> channels);
     void draw();
 
 private:

@@ -39,7 +39,7 @@ void DmxControl::updateChannel(int channel, float value)
     //level = ofMap(scaledVol, 0.0, 0.5, 0, 120);
     //std::cout<<"Update dmx with "<<val<<std::endl;
     //std::cout<<"Update channel "<<channel<<" with "<<value<<std::endl;
-
+    channels[channel].setValue(value);
     dmx.setLevel(channels[channel].number, val);
 }
 

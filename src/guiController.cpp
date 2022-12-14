@@ -7,28 +7,32 @@ void guiController::setup()
 
 	// open port by number (you may need to change this)
 	// midiIn.openPort(1);
-	midiIn.openPort(1);
+	std::cout<<midiIn.getInPortName(1)<<std::endl;
+	isconnected = midiIn.openPort(1);
 	//midiIn.openPort("Teensy MIDI:Teensy MIDI");	// by name
 	//midiIn.openVirtualPort("ofxMidiIn Input"); // open a virtual port
 
 	// don't ignore sysex, timing, & active sense messages,
 	// these are ignored by default
-	midiIn.ignoreTypes(false, false, false);
-
-	// add ofApp as a listener
-	midiIn.addListener(this);
-
-	// print received messages to the console
-	midiIn.setVerbose(true);
-    for (int i = 0; i < 40; i++)
-    {
-        inputs.push_back(0.0);
-    } 
-
-	for(int i = 0; i < 4; i++)
+	if(isconnected)
 	{
-		toggles.push_back(false);
-		buttons.push_back(false);
+		midiIn.ignoreTypes(false, false, false);
+
+		// add ofApp as a listener
+		midiIn.addListener(this);
+
+		// print received messages to the console
+		midiIn.setVerbose(true);
+		for (int i = 0; i < 40; i++)
+		{
+			inputs.push_back(0.0);
+		} 
+
+		for(int i = 0; i < 4; i++)
+		{
+			toggles.push_back(false);
+			buttons.push_back(false);
+		}
 	}
 }
 

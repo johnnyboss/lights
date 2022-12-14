@@ -57,6 +57,15 @@ class DmxControl
         void disconnect();
         void connect();
         void updateAll(bool clear = false);
+        vector<float> getChannels()
+        {
+            vector<float> _channels;
+            for(int i = 0; i < channels.size(); i++)
+            {
+                _channels.push_back(channels[i].value);
+            }
+            return _channels;
+        } 
     private:
         string deviceID;
         int nChannels, startAddress;

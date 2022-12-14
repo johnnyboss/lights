@@ -1,5 +1,4 @@
 #include "ofMain.h"
-#include "ofxStepSequencer.h"
 #include "ofxSerial.h"
 class SerialMessage
 {

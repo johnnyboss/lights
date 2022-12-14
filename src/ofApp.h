@@ -10,6 +10,8 @@
 #include "ofxOsc.h"
 #include "strobes.h"
 #include "ofEvents.h"
+#include "ofxDropdown.h"
+
 
 #define PORT 7400
 
@@ -49,12 +51,17 @@ class ofApp : public ofBaseApp, public ofxMidiListener
 		float intensity;
 		//GUI
 		ofxPanel gui;
+
+		ofxPanel oscPanel;
 		ofxToggle seqToggle, guiToggle, midiToggle, randomBrightToggle, redActive, blueActive, oscReceiver;
 
 		ofxToggle knobDebug, allRed, allBlue, oscillatorToggle, cubeStrobeToggle;
 		ofxFloatSlider minSeqBrightness, maxSeqBrightness, redFade, blueFade;
 		ofxFloatSlider minRedBrightness, maxRedBrightness, minBlueBrightness, maxBlueBrightness;
 
+		ofxFloatSlider roscSlider1, roscSlider2, roscSlider3, roscSlider4;
+		ofxFloatSlider boscSlider1, boscSlider2, boscSlider3, boscSlider4;
+		ofxFloatSlider rmasterSlider, bmasterSlider;
 		//ofxFloatSlider minRedBrightness, maxRedBrightness, minBlueBrightness, maxBlueBrightness;
 
 		bool stripSeqActive;
@@ -78,5 +85,5 @@ class ofApp : public ofBaseApp, public ofxMidiListener
 
 		ofxOscReceiver receiver;
 
-		ofArduino ard;
+		mockStage stage;
 };

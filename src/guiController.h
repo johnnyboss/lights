@@ -22,4 +22,5 @@ public:
     vector<bool> buttons;
 
     bool init;
+    bool isconnected;
 };

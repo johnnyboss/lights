@@ -37,6 +37,7 @@ void ofApp::setup()
     dmx.setup(24, 1);
 
     gui.setup();
+    oscPanel.setup();
     
     seq.setup();
     
@@ -58,20 +59,33 @@ void ofApp::setup()
     gui.add(minBlueBrightness.setup("min Blue brightness", 0, 0, 1));
     gui.add(maxBlueBrightness.setup("max Blue brightness", 1, 0, 1));
 
+    // gui.add()
+
 
     gui.add(redFade.setup("redFade", 1, 0, 1));
     gui.add(blueFade.setup("blueFade", 1, 0, 1));
 
     gui.add(allRed.setup("allRed", false));
     gui.add(allBlue.setup("allBlue", false));
+
+    oscPanel.add(roscSlider1.setup("rosc1", 0.5, 0, 1));
+    oscPanel.add(roscSlider2.setup("rosc2", 0.5, 0, 1));
+    oscPanel.add(roscSlider3.setup("rosc3", 0.5, 0, 1));
+    oscPanel.add(roscSlider4.setup("rosc4", 0.5, 0, 1));
+
+    oscPanel.add(boscSlider1.setup("bosc1", 0.5, 0, 1));
+    oscPanel.add(boscSlider2.setup("bosc2", 0.5, 0, 1));
+    oscPanel.add(boscSlider3.setup("bosc3", 0.5, 0, 1));
+    oscPanel.add(boscSlider4.setup("bosc4", 0.5, 0, 1));
+
+    oscPanel.add(rmasterSlider.setup("rmasterSlider", 0, 0, 1));
+    oscPanel.add(bmasterSlider.setup("bmasterSlider", 0, 0, 1));
+
     stripSeqActive = true;
     seq.show(true);
 
     allRedActive = false;
     allBlueActive = false;
-
-    // cubeStrobes.setup();
-    // ofAddListener(cubeStrobes.ard.EInitialized, &cubeStrobes, &strobes::setupArduino);
 
     ofSetFrameRate(120);
     DMXneedsUpdate = false;
@@ -89,25 +103,41 @@ float ofApp::calcFreq(float val)
     float freq = 61 - ofMap(val, 0, 1, 1, 60, true); 
     return freq;
 }
+
 void ofApp::dealwithOscs()
 {
+    if(controller.isconnected)
+    {
+        roscSlider1 = controller.inputs[1];
+        roscSlider2 = controller.inputs[5];
+        roscSlider3 = controller.inputs[9];
+        roscSlider4 = controller.inputs[13];
+        boscSlider1 = controller.inputs[2];
+        boscSlider2 = controller.inputs[6];
+        boscSlider3 = controller.inputs[10];
+        boscSlider4 = controller.inputs[14];
+
+        rmasterSlider = controller.inputs[25];
+        bmasterSlider = controller.inputs[26];
+    }
+    // rosc1 = 
     //RED OSCS
-    osc[0].setFrequency(calcFreq(controller.inputs[1]));
-    osc[1].setFrequency(calcFreq(controller.inputs[5]));
-    osc[2].setFrequency(calcFreq(controller.inputs[9]));
-    osc[3].setFrequency(calcFreq(controller.inputs[13]));
+    osc[0].setFrequency(calcFreq(roscSlider1));
+    osc[1].setFrequency(calcFreq(roscSlider2));
+    osc[2].setFrequency(calcFreq(roscSlider3));
+    osc[3].setFrequency(calcFreq(roscSlider4));
     //BLUE OSCS
-    osc[4].setFrequency(calcFreq(controller.inputs[2]));
-    osc[5].setFrequency(calcFreq(controller.inputs[6]));
-    osc[6].setFrequency(calcFreq(controller.inputs[10]));
-    osc[7].setFrequency(calcFreq(controller.inputs[14]));
+    osc[4].setFrequency(calcFreq(boscSlider1));
+    osc[5].setFrequency(calcFreq(boscSlider2));
+    osc[6].setFrequency(calcFreq(boscSlider3));
+    osc[7].setFrequency(calcFreq(boscSlider4));
 
     //RED MASTER OSC
-    redMasterOsc.setFrequency(calcFreq(controller.inputs[25]));
+    redMasterOsc.setFrequency(calcFreq(rmasterSlider));
     //BLUE MASTER OSC
-    blueMasterOsc.setFrequency(calcFreq(controller.inputs[26]));
+    blueMasterOsc.setFrequency(calcFreq(bmasterSlider));
 
-    if(controller.inputs[1] == 0)
+    if(roscSlider1 == 0)
     {
         osc[0].stop();   
     }
@@ -116,7 +146,7 @@ void ofApp::dealwithOscs()
         if(!osc[0].isPlaying)
             osc[0].start();
     }   
-    if(controller.inputs[5] == 0)
+    if(roscSlider2 == 0)
     {
         osc[1].stop();
         for(int f = 0; f < 3; f++)
@@ -129,7 +159,7 @@ void ofApp::dealwithOscs()
         if(!osc[1].isPlaying)
             osc[1].start();
     }   
-    if(controller.inputs[9] == 0)
+    if(roscSlider3 == 0)
     {
         osc[2].stop();
         for(int f = 0; f < 3; f++)
@@ -142,7 +172,7 @@ void ofApp::dealwithOscs()
         if(!osc[2].isPlaying)
             osc[2].start();
     }   
-    if(controller.inputs[13] == 0)
+    if(roscSlider4 == 0)
     {
         osc[3].stop();
         for(int f = 0; f < 3; f++)
@@ -155,7 +185,7 @@ void ofApp::dealwithOscs()
         if(!osc[3].isPlaying)
             osc[3].start();
     }   
-    if(controller.inputs[2] == 0)
+    if(boscSlider1 == 0)
     {
         osc[4].stop();
         for(int f = 0; f < 3; f++)
@@ -168,7 +198,7 @@ void ofApp::dealwithOscs()
         if(!osc[4].isPlaying)
             osc[4].start();
     }   
-    if(controller.inputs[6] == 0)
+    if(boscSlider2 == 0)
     {
         osc[5].stop();
         for(int f = 0; f < 3; f++)
@@ -181,7 +211,7 @@ void ofApp::dealwithOscs()
         if(!osc[5].isPlaying)
             osc[5].start();
     }   
-    if(controller.inputs[10] == 0)
+    if(boscSlider3 == 0)
     {
         osc[6].stop();
         for(int f = 0; f < 3; f++)
@@ -194,7 +224,7 @@ void ofApp::dealwithOscs()
         if(!osc[6].isPlaying)
             osc[6].start();
     }   
-    if(controller.inputs[14] == 0)
+    if(boscSlider4 == 0)
     {
         osc[7].stop();
         for(int f = 0; f < 3; f++)
@@ -208,7 +238,7 @@ void ofApp::dealwithOscs()
             osc[7].start();
     }   
 
-    if(controller.inputs[25] == 0)
+    if(rmasterSlider == 0)
     {
         redMasterOscOn = false;
         redMasterOsc.stop();
@@ -220,7 +250,7 @@ void ofApp::dealwithOscs()
         if(!redMasterOsc.isPlaying)
             redMasterOsc.start();
     }
-    if(controller.inputs[26] == 0)
+    if(bmasterSlider == 0)
     {
         blueMasterOscOn = false;
         blueMasterOsc.stop();
@@ -239,20 +269,22 @@ void ofApp::dealwithOscs()
 void ofApp::update()
 {
     // cubeStrobes.updateArduino();
-    seqToggle = controller.toggles[0];
-    oscillatorToggle = controller.toggles[1];
-    cubeStrobeToggle = controller.toggles[2];
-    oscReceiver = controller.toggles[3];
+    if(controller.isconnected)
+    {
+        seqToggle = controller.toggles[0];
+        oscillatorToggle = controller.toggles[1];
+        cubeStrobeToggle = controller.toggles[2];
+        oscReceiver = controller.toggles[3];
 
-    masterRedController = controller.buttons[0];
-    masterBlueController = controller.buttons[1];
+        masterRedController = controller.buttons[0];
+        masterBlueController = controller.buttons[1];
 
-    //MASTER BRIGHTNESSES
-    minRedBrightness = controller.inputs[17];
-    maxRedBrightness = controller.inputs[21];
-    minBlueBrightness = controller.inputs[18];
-    maxBlueBrightness = controller.inputs[22];
-
+        //MASTER BRIGHTNESSES
+        minRedBrightness = controller.inputs[17];
+        maxRedBrightness = controller.inputs[21];
+        minBlueBrightness = controller.inputs[18];
+        maxBlueBrightness = controller.inputs[22];
+    }
     dealwithOscs();
     
     // cubeStrobes.updateStrobe(0, controller.inputs[3]);
@@ -330,41 +362,41 @@ void ofApp::update()
     
     if(seqToggle)//USE SEQUENCER TO CONTROL LIGHTS
     {
-        if(seq.hasNewStep && seq.isPlaying)
-        {
-            for(int i = 0; i < 24; i++)
-            {
-                //std::cout<<i<<" : "<<seq.notes_params[i]<<std::endl;
-                DMXneedsUpdate = true;
-                float lightIntensity = 0;
-                lightIntensity = seq.notes_params[i];
-                if(i < 12 )//check if we want to activate red
-                {
-                    if(!redActive)
-                        lightIntensity = 0;
-                    else
-                    {
-                        if(randomBrightToggle)//use random values for light intensity
-                        {
-                            lightIntensity = lightIntensity * ofRandom(minSeqBrightness, maxSeqBrightness);
-                        }
-                    }
-                }
+        // if(seq.hasNewStep && seq.isPlaying)
+        // {
+        //     for(int i = 0; i < 24; i++)
+        //     {
+        //         //std::cout<<i<<" : "<<seq.notes_params[i]<<std::endl;
+        //         DMXneedsUpdate = true;
+        //         float lightIntensity = 0;
+        //         lightIntensity = seq.notes_params[i];
+        //         if(i < 12 )//check if we want to activate red
+        //         {
+        //             if(!redActive)
+        //                 lightIntensity = 0;
+        //             else
+        //             {
+        //                 if(randomBrightToggle)//use random values for light intensity
+        //                 {
+        //                     lightIntensity = lightIntensity * ofRandom(minSeqBrightness, maxSeqBrightness);
+        //                 }
+        //             }
+        //         }
                     
-                if(i >= 12 )//check if we want to activate blue
-                {
-                    if(!blueActive)
-                        lightIntensity = 0;
-                    else
-                    {
-                        if(randomBrightToggle)//use random values for light intensity
-                            lightIntensity = lightIntensity * ofRandom(minSeqBrightness, maxSeqBrightness);
-                    }
-                }
-                dmx.updateChannel(i, lightIntensity);
-            }
-            seq.hasNewStep = false;
-        }
+        //         if(i >= 12 )//check if we want to activate blue
+        //         {
+        //             if(!blueActive)
+        //                 lightIntensity = 0;
+        //             else
+        //             {
+        //                 if(randomBrightToggle)//use random values for light intensity
+        //                     lightIntensity = lightIntensity * ofRandom(minSeqBrightness, maxSeqBrightness);
+        //             }
+        //         }
+        //         dmx.updateChannel(i, lightIntensity);
+        //     }
+        //     seq.hasNewStep = false;
+        // }
     }
 
     if(allRed)
@@ -469,6 +501,7 @@ void ofApp::update()
 
     if(DMXneedsUpdate)
     {
+        stage.updateStrips(dmx.getChannels());
         dmx.update();
         DMXneedsUpdate = false;
     }
@@ -480,6 +513,7 @@ void ofApp::update()
 void ofApp::draw()
 {
     gui.draw();
+    oscPanel.draw();
     ofFill();
     ofSetColor(255);
     //ofRect(200,200,512, 200);
@@ -522,6 +556,7 @@ void ofApp::draw()
 
     seq.draw();
     controller.drawDebug();
+    stage.draw();
     // for (unsigned int i = 0; i < midiMessages.size(); ++i)
 	// {
 
@@ -617,6 +652,7 @@ void ofApp::draw()
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key)
 { 
+
     // if(key == '1')
     // {
     //     osc[activeOsc].start();
